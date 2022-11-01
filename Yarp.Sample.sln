@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarp.Sample", "Yarp.Sample\Yarp.Sample.csproj", "{863A4564-322B-4E2A-863D-0A07E7511933}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarp.Service", "Yarp.Service\Yarp.Service.csproj", "{0FF0B2C7-CFE1-4FA1-866C-6B6CA056381D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{863A4564-322B-4E2A-863D-0A07E7511933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{863A4564-322B-4E2A-863D-0A07E7511933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{863A4564-322B-4E2A-863D-0A07E7511933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{863A4564-322B-4E2A-863D-0A07E7511933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FF0B2C7-CFE1-4FA1-866C-6B6CA056381D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FF0B2C7-CFE1-4FA1-866C-6B6CA056381D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FF0B2C7-CFE1-4FA1-866C-6B6CA056381D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FF0B2C7-CFE1-4FA1-866C-6B6CA056381D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
