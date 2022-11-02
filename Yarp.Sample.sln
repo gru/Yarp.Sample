@@ -4,6 +4,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarp.Sample", "Yarp.Sample\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarp.Service", "Yarp.Service\Yarp.Service.csproj", "{0FF0B2C7-CFE1-4FA1-866C-6B6CA056381D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{3CDC583D-7D2C-4C06-B36F-B804F4B7FDBB}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\add.user.token.ps1 = Scripts\add.user.token.ps1
+		Scripts\get.admin.token.ps1 = Scripts\get.admin.token.ps1
+		Scripts\run.keycloak.ps1 = Scripts\run.keycloak.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -1,0 +1,1 @@
+﻿curl -d 'client_id=yarp' -d 'client_secret=RhvfIgLHkHJx15iI7T3XlWqeU3ldkADR' -d 'username=user' -d 'password=user' -d 'grant_type=password' 'http://localhost:8080/realms/yarp/protocol/openid-connect/token'
