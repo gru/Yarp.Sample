@@ -1,4 +1,6 @@
-﻿namespace Yarp.Sample.Infrastructure;
+﻿using Microsoft.IdentityModel.Tokens;
+
+namespace Yarp.Sample.Infrastructure;
 
 public class IntrospectionOptions
 {
