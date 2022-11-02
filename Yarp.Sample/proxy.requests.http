@@ -1,4 +1,4 @@
-﻿POST http://localhost:5000/invalidate?user=ad263ef6-9e51-4d97-b00a-972906619c4c
+﻿POST http://localhost:5000/users/ad263ef6-9e51-4d97-b00a-972906619c4c/block
 Content-Type: application/json
 
 {}
