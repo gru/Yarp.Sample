@@ -12,7 +12,7 @@ public class AppController : ControllerBase
     }
     
     [Authorize]
-    [HttpGet("introspection")]
+    [HttpGet("/introspection")]
     public string Introspection()
     {
         return $"Hello from introspection, {User.GetName()}";

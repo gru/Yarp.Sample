@@ -6,7 +6,5 @@ public static class AppAuthenticationSchemes
     
     public const string ValidationScheme = "Bearer";
     
-    public const string ExchangeScheme = "Bearer";
-    
     public const string CompoundScheme = $"{ValidationScheme}Or{IntrospectionScheme}";
 }

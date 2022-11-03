@@ -13,6 +13,9 @@ var yarpOptions = new YarpSampleOptions();
 builder.Configuration
     .GetSection(nameof(YarpSampleOptions))
     .Bind(yarpOptions);
+builder.Services
+    .Configure<YarpSampleOptions>(builder.Configuration
+        .GetSection(nameof(YarpSampleOptions)));
 
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<ISessionValidationService, SessionValidationService>();
@@ -24,6 +27,13 @@ builder.Services.AddHttpClient<IKeycloakApi, KeycloakApi>(options =>
         new Uri($"{uri.Scheme}://{uri.Host}:{uri.Port}");
     options.DefaultRequestHeaders.Authorization = 
         new AuthenticationHeaderValue("Bearer", yarpOptions.AdminToken);
+});
+builder.Services.AddHttpClient<ITokenExchangeClient, TokenExchangeClient>(options =>
+{
+    var uri = new Uri(yarpOptions.Authority);
+
+    options.BaseAddress =
+        new Uri($"{uri.Scheme}://{uri.Host}:{uri.Port}");
 });
 
 builder.Services
@@ -46,11 +56,6 @@ builder.Services
         {
             policyBuilder.RequireAuthenticatedUser()
                 .AddAuthenticationSchemes(AppAuthenticationSchemes.IntrospectionScheme);
-        });
-        options.AddPolicy("RequireTokenExchange", policyBuilder =>
-        {
-            policyBuilder.RequireAuthenticatedUser()
-                .AddAuthenticationSchemes(AppAuthenticationSchemes.ValidationScheme, AppAuthenticationSchemes.ExchangeScheme);
         });
     })
     .AddAuthentication(options =>
@@ -120,13 +125,14 @@ builder.Services
             var scheme = introspectionOptions.Value.Paths.Any(p => ctx.Request.Path.StartsWithSegments(p)) 
                 ? AppAuthenticationSchemes.IntrospectionScheme 
                 : AppAuthenticationSchemes.ValidationScheme;
-
+    
             return scheme;
         };
     });
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration
-        .GetSection("ReverseProxy"));
+        .GetSection("ReverseProxy"))
+    .AddTransforms<TokenExchangeTransformProvider>();
 
 var app = builder.Build();
 app.UseAuthentication();

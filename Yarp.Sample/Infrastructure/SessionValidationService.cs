@@ -1,8 +1,9 @@
-﻿using System.Security.Claims;
-using System.Text.Json.Serialization;
+﻿using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Web;
 using IdentityModel;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Yarp.Sample.Keycloak;
 
 namespace Yarp.Sample.Infrastructure;
