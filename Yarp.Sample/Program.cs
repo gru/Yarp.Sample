@@ -39,13 +39,18 @@ builder.Services
     {
         options.AddPolicy("RequireAuthenticatedUser", policyBuilder =>
         {
-            policyBuilder.RequireAuthenticatedUser();
-            policyBuilder.AddAuthenticationSchemes(AppAuthenticationSchemes.ValidationScheme);
+            policyBuilder.RequireAuthenticatedUser()
+                .AddAuthenticationSchemes(AppAuthenticationSchemes.ValidationScheme);
         });
         options.AddPolicy("RequireIntrospectedUser", policyBuilder =>
         {
-            policyBuilder.RequireAuthenticatedUser();
-            policyBuilder.AuthenticationSchemes.Add(AppAuthenticationSchemes.IntrospectionScheme);
+            policyBuilder.RequireAuthenticatedUser()
+                .AddAuthenticationSchemes(AppAuthenticationSchemes.IntrospectionScheme);
+        });
+        options.AddPolicy("RequireTokenExchange", policyBuilder =>
+        {
+            policyBuilder.RequireAuthenticatedUser()
+                .AddAuthenticationSchemes(AppAuthenticationSchemes.ValidationScheme, AppAuthenticationSchemes.ExchangeScheme);
         });
     })
     .AddAuthentication(options =>
