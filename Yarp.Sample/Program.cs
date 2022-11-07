@@ -1,8 +1,12 @@
 using System.Net.Http.Headers;
 using IdentityModel.AspNetCore.OAuth2Introspection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Yarp.ReverseProxy.Configuration;
+using Yarp.ReverseProxy.Model;
 using Yarp.Sample;
 using Yarp.Sample.Infrastructure;
 using Yarp.Sample.Keycloak;
@@ -35,10 +39,6 @@ builder.Services.AddHttpClient<ITokenExchangeClient, TokenExchangeClient>(option
     options.BaseAddress =
         new Uri($"{uri.Scheme}://{uri.Host}:{uri.Port}");
 });
-
-builder.Services
-    .Configure<IntrospectionOptions>(builder.Configuration
-        .GetSection(nameof(IntrospectionOptions)));
 
 builder.Services
     .AddControllers()
@@ -119,14 +119,15 @@ builder.Services
     {
         options.ForwardDefaultSelector = ctx =>
         {
-            var introspectionOptions = ctx.RequestServices
-                .GetRequiredService<IOptions<IntrospectionOptions>>();
+            var endpointFeature = ctx.Features.Get<IEndpointFeature>();
+            if (endpointFeature is { Endpoint: RouteEndpoint routeEndpoint })
+            {
+                var routeModel = routeEndpoint.Metadata.GetMetadata<RouteModel>();
+                if (routeModel?.Config.Metadata?.TryGetValue("AuthenticationScheme", out var scheme) ?? false)
+                    return scheme;
+            }
             
-            var scheme = introspectionOptions.Value.Paths.Any(p => ctx.Request.Path.StartsWithSegments(p)) 
-                ? AppAuthenticationSchemes.IntrospectionScheme 
-                : AppAuthenticationSchemes.ValidationScheme;
-    
-            return scheme;
+            return AppAuthenticationSchemes.ValidationScheme;
         };
     });
 builder.Services.AddReverseProxy()
