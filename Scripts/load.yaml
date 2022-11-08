@@ -1,0 +1,15 @@
+phantom:
+  address: host.docker.internal:5001
+  load_profile:
+    load_type: rps
+    schedule: const(10, 1m)
+  header_http: "1.1"
+  headers:
+    - "[Host: host.docker.internal:5001]"
+    - "[Connection: close]"
+  uris:
+    - "/"
+console:
+  enabled: true
+telegraf:
+  enabled: false

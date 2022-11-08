@@ -101,6 +101,7 @@ builder.Services
         options.ClientSecret = yarpOptions.ClientSecret;
         options.IntrospectionEndpoint = yarpOptions.IntrospectionEndpoint;
         options.SkipTokensWithDots = false;
+        options.EnableCaching = false;
         options.SaveToken = false;
         options.Events = new OAuth2IntrospectionEvents
         {

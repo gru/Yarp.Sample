@@ -17,4 +17,11 @@ public class AppController : ControllerBase
     {
         return $"Hello from introspection, {User.GetName()}";
     }
+    
+    [Authorize]
+    [HttpGet("/exchange")]
+    public string Exchange()
+    {
+        return $"Hello from exchange, {User.GetName()}";
+    }
 }
