@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Yarp.Service;
+using Yarp.Service.Infrastructure;
+using Yarp.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +13,13 @@ builder.Configuration
     .Bind(serviceOptions);
 
 builder.Services
+    .Configure<PassportOptions>(builder.Configuration
+        .GetSection(nameof(PassportOptions)))
     .AddControllers()
     .AddControllersAsServices();
+
+builder.Services
+    .AddSingleton<IPassportService, PassportService>();
 
 builder.Services
     .AddAuthorization()
@@ -19,7 +27,11 @@ builder.Services
     {
         options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = PassportDefaults.AuthenticationScheme;
+    })
+    .AddScheme<PassportAuthenticationOptions, PassportAuthenticationHandler>(
+        PassportDefaults.AuthenticationScheme, _ =>
+    {
     })
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {

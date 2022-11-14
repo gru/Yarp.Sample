@@ -2,14 +2,12 @@ using System.Net.Http.Headers;
 using IdentityModel.AspNetCore.OAuth2Introspection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Routing.Template;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Yarp.ReverseProxy.Configuration;
 using Yarp.ReverseProxy.Model;
 using Yarp.Sample;
 using Yarp.Sample.Infrastructure;
 using Yarp.Sample.Keycloak;
+using Yarp.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +18,12 @@ builder.Configuration
 builder.Services
     .Configure<YarpSampleOptions>(builder.Configuration
         .GetSection(nameof(YarpSampleOptions)));
+
+builder.Services
+    .AddSingleton<IPassportService, PassportService>();
+builder.Services.Configure<PassportOptions>(
+    builder.Configuration
+        .GetSection(nameof(PassportOptions)));
 
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<ISessionValidationService, SessionValidationService>();
@@ -134,7 +138,8 @@ builder.Services
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration
         .GetSection("ReverseProxy"))
-    .AddTransforms<TokenExchangeTransformProvider>();
+    .AddTransforms<TokenExchangeTransformProvider>()
+    .AddTransforms<IdentityPropagationTransformProvider>();
 
 var app = builder.Build();
 app.UseAuthentication();

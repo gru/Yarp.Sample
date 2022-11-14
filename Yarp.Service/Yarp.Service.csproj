@@ -9,4 +9,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Yarp.Shared\Yarp.Shared.csproj" />
+    </ItemGroup>
 </Project>

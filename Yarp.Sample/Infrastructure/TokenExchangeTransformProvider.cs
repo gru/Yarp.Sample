@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Yarp.ReverseProxy.Transforms;
 using Yarp.ReverseProxy.Transforms.Builder;
 
@@ -30,15 +31,13 @@ public class TokenExchangeTransformProvider : ITransformProvider
                 var authorization = ctx.HttpContext.Request.Headers.Authorization.SingleOrDefault<string>();
                 if (authorization != null)
                 {
-                    const string bearerScheme = $"{JwtBearerDefaults.AuthenticationScheme} ";
-                
-                    if (authorization.StartsWith(bearerScheme, StringComparison.OrdinalIgnoreCase))
+                    if (authorization.StartsWith(JwtBearerDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase))
                     {
-                        var token = authorization.Substring(bearerScheme.Length).Trim();
+                        var token = authorization.Substring(JwtBearerDefaults.AuthenticationScheme.Length).Trim();
                         var exchange = await _tokenExchangeClient.ExchangeToken(token);
 
-                        ctx.HttpContext.Request.Headers.Authorization = $"{bearerScheme}{exchange}";
-                    }  
+                        ctx.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, exchange);
+                    }
                 }
             });    
         }
