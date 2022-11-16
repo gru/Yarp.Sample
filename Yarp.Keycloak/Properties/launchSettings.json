@@ -1,0 +1,11 @@
+﻿{
+  "profiles": {
+    "Yarp.Keycloak": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:4999",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
