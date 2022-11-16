@@ -45,6 +45,15 @@ builder.Services.AddHttpClient<ITokenExchangeClient, TokenExchangeClient>(option
 });
 
 builder.Services
+    .AddHttpClient(OAuth2IntrospectionDefaults.BackChannelHttpClientName)
+    .AddHeaderPropagation(options => options.Headers.Add("Cookie"));;
+builder.Services
+    .AddHeaderPropagation(options =>
+    {
+        options.Headers.Add("Cookie");
+    });
+
+builder.Services
     .AddControllers()
     .AddControllersAsServices();
 
@@ -142,6 +151,7 @@ builder.Services.AddReverseProxy()
     .AddTransforms<IdentityPropagationTransformProvider>();
 
 var app = builder.Build();
+app.UseHeaderPropagation();
 app.UseAuthentication();
 app.UseAuthorization();
 
